@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: replicaset
+
+spec:
+  replicas: 4
+  selector:
+    matchExpressions:
+      - {key: type, operator: In, values: [frontend,webserver,nginxserver]}
+      - {key: environment, operator: NotIn, values: [production]}
+  template:
+    metadata:
+      name: my-pod
+      labels:
+        type: nginxserver
+        environment: staging
+    spec:
+      containers:
+        - name: nginx-container
+          image: nginx
